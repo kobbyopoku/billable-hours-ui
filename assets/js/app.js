@@ -9,33 +9,9 @@ var getAllUsers = baseUrl + apiRoute + "employees";
 var assignCustomersApi = baseUrl + apiRoute + "job/employee/";
 var customerDataApi = baseUrl + apiRoute + "invoices";
 var jobsDataApi = baseUrl + apiRoute + "jobs";
+var generateInvoice = baseUrl + apiRoute + "invoice/generate/";
+var deleteAdminUserStatus  = baseUrl + apiRoute + "employee/"
 
-
-var statusCustomerDataApi = baseUrl + apiRoute + "get-customer-data-by-status";
-var rgsCustomerDataApi = baseUrl + apiRoute + "get-base-rgs";
-var updateCustomerStatus = baseUrl + apiRoute + "update-customer-status";
-var updateAdminUserStatus = baseUrl + apiRoute + "user-activation";
-var deleteAdminUserStatus = baseUrl + apiRoute + "delete-user";
-var editAdminUserApi = baseUrl + apiRoute + "update-user";
-var addPromotionApi = baseUrl + apiRoute + "create-promo";
-var deletePromoApi = baseUrl + apiRoute + "delete-promo";
-var getPromotionsList = baseUrl + apiRoute + "list-all-promos";
-var getUnasssignedCustomers = baseUrl + apiRoute + "get-unassigned-customer-data";
-var setGlobalTargetApi = baseUrl + apiRoute + "set-global-target";
-var updateGlobalTarget = baseUrl + apiRoute + "update-global-target";
-var updateActivityTarget = baseUrl + apiRoute + "update-activity-target";
-var getStoredGlobalTargetApi = baseUrl + apiRoute + "get-stored-global-target";
-var getStoredActivityTargetApi = baseUrl + apiRoute + "get-stored-activity-target";
-var performanceDataApi = baseUrl + apiRoute + "all-performance-by-month";
-var getTeamRankingApi = baseUrl + apiRoute + "get-team-ranks";
-var setActivityTargetApi = baseUrl + apiRoute + "set-activity-target";
-var tagCustomersApi = baseUrl + apiRoute + "assign-customer-promos";
-var untagCustomersApi = baseUrl + apiRoute + "untag-customer-promos";
-var deleteCustomersApi = baseUrl + apiRoute + "delete-customer";
-var getPromoNamesApi = baseUrl + apiRoute + "get-all-promos";
-var getFeedbackByAgents = baseUrl + apiRoute + "get-customer-feedback";
-var subscriberInteractionsApi = baseUrl + apiRoute + "search-feedback";
-var allInteractionsApi = baseUrl + apiRoute + "search-feedback-by-date";
 
 var subscriberStartDate = "";
 var subscriberEndDate = "";
@@ -58,39 +34,9 @@ $("#retryBtn").click(function (e) {
     location.reload();
 });
 
-
-/**Handle active customers here **/
-$("#base-tab-2a").click(function (e) {
-    getActiveRgsCustomerData();
-
-});
-
-/**Handle active customers here **/
-$("#base-tab-2b").click(function (e) {
-    getActiveNonRgsCustomerData();
-
-});
-
-/**Handle INACTIVE customers here **/
-$("#base-tab-3").click(function (e) {
-    getInActiveCustomerData();
-
-});
-
-/**Handle SUSPENDED customers **/
-$("#base-tab-4").click(function (e) {
-    getSuspendedCustomerData();
-
-});
-
-/**Handle predeactive customers **/
-$("#base-tab-5").click(function (e) {
-    getPredeactiveCustomerData();
-
-});
-/**Handle locked customers **/
-$("#base-tab-6").click(function (e) {
-    getLockedCustomerData();
+/**When promo btn is clicked **/
+$("#viewPromoBtn").click(function (e) {
+    getPromoData();
 
 });
 
@@ -128,8 +74,8 @@ $("#manageCustomersBtn").click(function (e) {
         text: "",
         type: "warning",
         showCancelButton: true,
-        confirmButtonText: "Assign",
-        cancelButtonText: "Delete",
+        confirmButtonText: "Record",
+        cancelButtonText: "Cancel",
         closeOnConfirm: true,
         closeOnCancel: true
     }, function (isConfirm) {
@@ -201,259 +147,6 @@ $("#editTargetsBtn").click(function (e) {
 
 });
 
-
-
-// PERFORMANCE VIEW DATE RANGE SELECTOR
-function performanceDatePicker() {
-
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('#datereportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#datereportrange').daterangepicker({
-        showCustomRangeLabel: false,
-        autoApply: false,
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'January': [moment().year(new Date().getFullYear()).month(0).date(1), moment().year(new Date().getFullYear()).month(0).date(31)],
-            'February': [moment().year(new Date().getFullYear()).month(1).date(1), moment().year(new Date().getFullYear()).month(1).date(28)],
-            'March': [moment().year(new Date().getFullYear()).month(2).date(1), moment().year(new Date().getFullYear()).month(2).date(31)],
-            'April': [moment().year(new Date().getFullYear()).month(3).date(1), moment().year(new Date().getFullYear()).month(3).date(30)],
-            'May': [moment().year(new Date().getFullYear()).month(4).date(1), moment().year(new Date().getFullYear()).month(4).date(31)],
-            'June': [moment().year(new Date().getFullYear()).month(5).date(1), moment().year(new Date().getFullYear()).month(5).date(30)],
-            'July': [moment().year(new Date().getFullYear()).month(6).date(1), moment().year(new Date().getFullYear()).month(6).date(31)],
-            'August': [moment().year(new Date().getFullYear()).month(7).date(1), moment().year(new Date().getFullYear()).month(7).date(31)],
-            'September': [moment().year(new Date().getFullYear()).month(8).date(1), moment().year(new Date().getFullYear()).month(8).date(30)],
-            'October': [moment().year(new Date().getFullYear()).month(9).date(1), moment().year(new Date().getFullYear()).month(9).date(31)],
-            'November': [moment().year(new Date().getFullYear()).month(10).date(1), moment().year(new Date().getFullYear()).month(10).date(30)],
-            'December': [moment().year(new Date().getFullYear()).month(11).date(1), moment().year(new Date().getFullYear()).month(11).date(31)],
-
-        }
-    }, cb);
-
-    cb(start, end);
-
-    $('#datereportrange').on('apply.daterangepicker', function (ev, picker) {
-
-        var startDate = picker.startDate.format('YYYY/MM/DD');
-        var endDate = picker.endDate.format('YYYY/MM/DD');
-
-        //  do something, like logging an input
-        // console.log(picker.startDate.format('YYYY-MM-DD'));
-        // console.log(picker.endDate.format('YYYY-MM-DD'));
-
-        // On change of Month, show that particular month data
-
-        var pickerData = "";
-
-        if (picker.startDate.format('MM').startsWith("0")) {
-            pickerData = picker.startDate.format('MM').substring(1)
-        } else {
-            pickerData = picker.startDate.format('MM')
-        }
-
-        var selectedMonth = monthNames[pickerData - 1];
-        getAllPerformanceData(selectedMonth);
-
-    });
-
-}
-
-// TEAM RANKING VIEW DATE RANGE SELECTOR
-function teamRankingDatePicker() {
-
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('#teamRankingDateRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#teamRankingDateRange').daterangepicker({
-        showCustomRangeLabel: false,
-        autoApply: false,
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'January': [moment().year(new Date().getFullYear()).month(0).date(1), moment().year(new Date().getFullYear()).month(0).date(31)],
-            'February': [moment().year(new Date().getFullYear()).month(1).date(1), moment().year(new Date().getFullYear()).month(1).date(28)],
-            'March': [moment().year(new Date().getFullYear()).month(2).date(1), moment().year(new Date().getFullYear()).month(2).date(31)],
-            'April': [moment().year(new Date().getFullYear()).month(3).date(1), moment().year(new Date().getFullYear()).month(3).date(30)],
-            'May': [moment().year(new Date().getFullYear()).month(4).date(1), moment().year(new Date().getFullYear()).month(4).date(31)],
-            'June': [moment().year(new Date().getFullYear()).month(5).date(1), moment().year(new Date().getFullYear()).month(5).date(30)],
-            'July': [moment().year(new Date().getFullYear()).month(6).date(1), moment().year(new Date().getFullYear()).month(6).date(31)],
-            'August': [moment().year(new Date().getFullYear()).month(7).date(1), moment().year(new Date().getFullYear()).month(7).date(31)],
-            'September': [moment().year(new Date().getFullYear()).month(8).date(1), moment().year(new Date().getFullYear()).month(8).date(30)],
-            'October': [moment().year(new Date().getFullYear()).month(9).date(1), moment().year(new Date().getFullYear()).month(9).date(31)],
-            'November': [moment().year(new Date().getFullYear()).month(10).date(1), moment().year(new Date().getFullYear()).month(10).date(30)],
-            'December': [moment().year(new Date().getFullYear()).month(11).date(1), moment().year(new Date().getFullYear()).month(11).date(31)],
-
-        }
-    }, cb);
-
-    cb(start, end);
-
-    $('#teamRankingDateRange').on('apply.daterangepicker', function (ev, picker) {
-
-        var startDate = picker.startDate.format('YYYY/MM/DD');
-        var endDate = picker.endDate.format('YYYY/MM/DD');
-
-        //  do something, like logging an input
-        // console.log(picker.startDate.format('YYYY-MM-DD'));
-        // console.log(picker.endDate.format('YYYY-MM-DD'));
-
-        // On change of Month, show that particular month data
-
-        var pickerData = "";
-
-        if (picker.startDate.format('MM').startsWith("0")) {
-            pickerData = picker.startDate.format('MM').substring(1)
-        } else {
-            pickerData = picker.startDate.format('MM')
-        }
-
-        var selectedMonth = monthNames[pickerData - 1];
-        getTeamRankingData(selectedMonth);
-
-    });
-
-}
-
-// INTERACTIONS HISTORY BY SUBSCRIBER DATE RANGE SELECTOR
-function subscriberDateRangePicker() {
-
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('#subscriberReportRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#subscriberReportRange').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        timePicker24Hour: true,
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment().startOf('day'), moment()],
-            'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('day').startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().startOf('day').subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        locale: {
-            format: 'DD-MM-YYYY H:mm:s'
-        }
-    }, cb);
-
-    cb(start, end);
-
-    $('#subscriberReportRange').on('apply.daterangepicker', function (ev, picker) {
-
-        subscriberStartDate = picker.startDate.format('YYYY-MM-DD H:mm:s');
-        subscriberEndDate = picker.endDate.format('YYYY-MM-DD H:mm:s');
-
-        //  do something, like logging an input
-        console.log(subscriberStartDate);
-        console.log(subscriberEndDate);
-
-    });
-
-}
-
-
-// INTERACTIONS HISTORY BY SUBSCRIBER DATE RANGE SELECTOR
-function allDateRangePicker() {
-
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('#allReportRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#allReportRange').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        timePicker24Hour: true,
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment().startOf('day'), moment()],
-            'Yesterday': [moment().startOf('day').subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Last 7 Days': [moment().startOf('day').subtract(6, 'days'), moment()],
-            'Last 30 Days': [moment().startOf('day').subtract(29, 'days'), moment()],
-            'This Month': [moment().startOf('day').startOf('month'), moment().endOf('month')],
-            'Last Month': [moment().startOf('day').subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-        },
-        locale: {
-            format: 'DD-MM-YYYY H:mm:s'
-        }
-    }, cb);
-
-    cb(start, end);
-
-    $('#allReportRange').on('apply.daterangepicker', function (ev, picker) {
-
-        allStartDate = picker.startDate.format('YYYY-MM-DD H:mm:s');
-        allEndDate = picker.endDate.format('YYYY-MM-DD H:mm:s');
-
-        //  do something, like logging an input
-        console.log(allStartDate);
-        console.log(allEndDate);
-
-    });
-
-}
-
-// Handle Promo Date Range Picker
-function promoDateRangePicker() {
-
-    var start = moment().startOf('month');
-    var end = moment().endOf('month');
-
-    function cb(start, end) {
-        $('#addPromoDateRange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    }
-
-    $('#addPromoDateRange').daterangepicker({
-        timePicker: true,
-        timePickerIncrement: 30,
-        timePicker24Hour: true,
-        startDate: start,
-        endDate: end,
-        ranges: {
-            'Today': [moment().startOf('day'), moment()],
-            'Tomorrow': [moment().startOf('day').add(1, 'days'), moment().add(1, 'days')],
-            'Next 7 Days': [moment().startOf('day').add(6, 'days'), moment()],
-            'Next 30 Days': [moment().startOf('day').add(29, 'days'), moment()],
-            'This Month': [moment().startOf('day').startOf('month'), moment().endOf('month')],
-        },
-        locale: {
-            format: 'DD-MM-YYYY H:mm:s'
-        }
-    }, cb);
-
-    cb(start, end);
-
-    $('#addPromoDateRange').on('apply.daterangepicker', function (ev, picker) {
-
-        allStartDate = picker.startDate.format('YYYY-MM-DD H:mm:s');
-        allEndDate = picker.endDate.format('YYYY-MM-DD H:mm:s');
-
-        //  do something, like logging an input
-        console.log(allStartDate);
-        console.log(allEndDate);
-
-    });
-
-}
 
 
 /** Remove Item in storge when logout BTN CLICK**/
@@ -606,39 +299,6 @@ function getStoredGlobalTarget() {
     });
 }
 
-/** GET STORED ACTIVITY TARGETS BY MONTHS AND SELECTED AGENT**/
-function getStoredActivityTarget(selectedAgent) {
-    var editSelectAgentType = selectedAgent.value;
-    var formData = {
-        "agent_id": editSelectAgentType,
-        "month": monthNames[new Date().getMonth()]
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: getStoredActivityTargetApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-            var allData = data["RESPONSE_DATA"][0];
-            $('#editActivityTarget').val(allData.activity_target);
-        } else {
-            console.log(data)
-        }
-    });
-
-    // Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-    });
-}
-
-
 /** APPEND CUSTOMERS (THIS WAS NOT USED , CSV FILE WAS USED INSTEAD**/
 function appendCustomers() {
     var request = $.ajax({
@@ -654,7 +314,7 @@ function appendCustomers() {
 
             for (i = 0; i < allData.length; i++) {
                 mainData = allData[i];
-                selectCustomers.append($("<option></option>").attr("value", mainData.accountno).text(toTitleCase(mainData.acct_name)));
+                selectCustomers.append($("<option></option>").attr("value", mainData.accountno).text((mainData.acct_name)));
             }
 
             $('.selectpicker').selectpicker('refresh');
@@ -722,12 +382,12 @@ $("#loginBtn").click(function (e) {
                 }
 
                 console.log(data);
-                displaySuccessToast(toTitleCase(data.message), ""); //DISPLAY TOAST
+                displaySuccessToast((data.message), ""); //DISPLAY TOAST
             } else {
                 hide_loader();
                 $("#loginBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsg(toTitleCase(data.message)); //display Error message
+                displayErrorMsg((data.message)); //display Error message
             }
         });
 
@@ -804,14 +464,14 @@ function getEmployeeJobs() {
                 if (mainData.status == "ACTIVE") {
                     // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
                     feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
+                    moreDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
+                    accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
                     // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
                 } else {
                     feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
                     // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
+                    moreDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
+                    accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
                     // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
                 }
 
@@ -903,7 +563,7 @@ function getEmployeeJobs() {
             });
 
             hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            // displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
         } else {
             displayErrorMsg((data.RESPONSE_MESSAGE));
         }
@@ -921,7 +581,7 @@ function getEmployeeJobs() {
 
 }
 
-function getCustomerData() {
+function getInvoiceData() {
     show_loader();
 
     var table_list = "";
@@ -929,14 +589,9 @@ function getCustomerData() {
     var trafficLight = "";
     var accountDetails = "";
     var moreDetails = "";
-    var feedBacks = "";
+    var deleteInvoice = "";
     var displayRgs = "";
-    // Counts for the cards
-    var activeRgsBase = 0;
-    var nonActiveRgsBase = 0;
-    var inactiveBase = 0;
-    var suspendedBase = 0;
-    var preDeactiveBase = 0;
+    ;
     var lockedBase = 0;
 
     $('#baseViewExportTable').DataTable().destroy();
@@ -960,19 +615,10 @@ function getCustomerData() {
                 mainData = allData[i];
                 var detailsJson = JSON.stringify(mainData);
 
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
+
+                deleteInvoice = "<a href='#' rel='tooltip' data-invoice-delete='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-trash'></i></a>";
+                accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='View Invoice' style='text-decoration: underline !important;'><i class='ti-eye'></i></a>";
+                
 
                 // check RGS
 
@@ -983,19 +629,11 @@ function getCustomerData() {
                         "<td>" + mainData.invoiceStatus + "</td>" +
                         "<td >" + mainData.invoiceDate + "</td>" +
                         "<td>" + mainData.itemsCount + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
+                        
+                        "<td class='td-actions' >" + deleteInvoice + "&nbsp;" + accountDetails + "</td>" +
                         "</tr>"
 
             }
-
-            // Append the counts for each of the cards here
-            $("#activeRgsBase").html(activeRgsBase);
-            $("#nonActiveRgsBase").html(nonActiveRgsBase);
-            $("#inactiveBase").html(inactiveBase);
-            $("#suspendedBase").html(suspendedBase);
-            $("#preDeactiveBase").html(preDeactiveBase);
-            $("#lockedBase").html(lockedBase);
 
             //Append the tables here
             $('#customerDataTable').html(table_list);
@@ -1059,10 +697,10 @@ function getCustomerData() {
                 }
             });
 
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+//            hide_loader();
+             displaySuccessToast((data.message), ""); //DISPLAY TOAST
         } else {
-            displayErrorMsg((data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.message));
         }
 
     });
@@ -1078,1023 +716,14 @@ function getCustomerData() {
 
 }
 
-//Get active RGS customer data --->>> Base View Page
-function getActiveRgsCustomerData() {
-    show_loader();
+//SHOW INVOICE DATA MORE DETAILS
+$(document).on('click', '[data-invoice-details]', function (e) {
 
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
+    var jsonDetails = JSON.parse($(this).attr('data-invoice-details'));
 
-    $('#activeRgsCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "rgs": "Y"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: rgsCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.status == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                    activeRgsBase++;
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                    nonActiveRgsBase++;
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#activeRgsCustomerData').html(table_list);
-
-            //Base view table
-            $('#activeRgsCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-//Get active NON-RGS customer data --->>> Base View Page
-function getActiveNonRgsCustomerData() {
-    show_loader();
-
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-
-    $('#activeNonRgsCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "rgs": "N"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: rgsCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#activeNonRgsCustomerData').html(table_list);
-
-            //Base view table
-            $('#activeNonRgsCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-//Get inactive customer data --->>> Base View Page
-function getInActiveCustomerData() {
-    show_loader();
-
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-
-    $('#inActiveCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "status": "INACTIVE"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: statusCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#inActiveCustomerData').html(table_list);
-
-            //Base view table
-            $('#inActiveCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-//Get suspended customer data --->>> Base View Page
-function getSuspendedCustomerData() {
-    show_loader();
-
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-
-    $('#suspendedCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "status": "SUSPENDED"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: statusCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#suspendedCustomerData').html(table_list);
-
-            //Base view table
-            $('#suspendedCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-//Get predeactive customer data --->>> Base View Page
-function getPredeactiveCustomerData() {
-    show_loader();
-
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-
-    $('#predeactiveCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "status": "PRE DEACTIVE"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: statusCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#predeactiveCustomerData').html(table_list);
-
-            //Base view table
-            $('#predeactiveCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-//Get locked customer data --->>> Base View Page
-function getLockedCustomerData() {
-    show_loader();
-
-    var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-
-    $('#lockedCustomerTable').DataTable().destroy();
-
-    var formData = {
-        "status": "LOCKED"
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: statusCustomerDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-customer-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                if (mainData.rgs == "Y") {
-                    displayRgs = "YES";
-                }
-
-                if (mainData.rgs == "N") {
-                    displayRgs = "NO";
-                }
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + accountDetails + "</td>" +
-                        "<td>" + mainData.sub_identity + "</td>" +
-                        "<td >" + toTitleCase(mainData.acct_name) + "</td>" +
-                        "<td>" + mainData.fixedline + "</td>" +
-                        "<td>" + mainData.offer_name + "</td>" +
-                        "<td>GHC " + mainData.advance_payment + "</td>" +
-                        "<td>" + mainData.last_cash_payment_date + "</td>" +
-                        "<td>" + mainData.bundle_expiry_date + "</td>" +
-                        "<td>" + mainData.agent + "</td>" +
-                        "<td>" + mainData.promo_name + "</td>" +
-                        "<td>" + mainData.gross_add + "</td>" +
-                        "<td>" + mainData.feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.comment + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td>" + displayRgs + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#lockedCustomerData').html(table_list);
-
-            //Base view table
-            $('#lockedCustomerTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-    });
-
-}
-
-
-//SHOW CUSTOMER DATA MORE DETAILS
-$(document).on('click', '[data-customer-details]', function (e) {
-
-    var jsonDetails = JSON.parse($(this).attr('data-customer-details'));
-
-    $('#displayAccountName').html(toTitleCase(jsonDetails.acct_name));
-    $('#showAccountNo').html(jsonDetails.accountno);
-    $('#showAccountName').html(toTitleCase(jsonDetails.acct_name));
-    // $('#showSubIdentity').html(toTitleCase(jsonDetails.sub_identity));
-    $('#showFixedLine').html(jsonDetails.fixedline);
-    $('#showPackage').html(jsonDetails.offer_name);
-    $('#showStatus').html(jsonDetails.status);
-    $('#showAgent').html(jsonDetails.agent);
-    // $('#showCurrentBalance').html(jsonDetails.current_bal);
-    // $('#showAdvancePayment').html("GHC "+jsonDetails.advance_payment);
-    $('#showLastPaymentDate').html(jsonDetails.last_cash_payment_date);
-    $('#showExpiryDate').html(jsonDetails.bundle_expiry_date);
+    $('#displayAccountName').html((jsonDetails.numberOfHours));
+    $('#showAccountNo').html(jsonDetails.unitPrice);
+    $('#showAccountName').html((jsonDetails.cost));
 
     $('#moreDetailsCustomerData').modal('show');
 
@@ -2229,12 +858,12 @@ $(document).on('click', '[data-customer-activate]', function (e) {
                     if (data.RESPONSE_CODE == "200") {
                         console.log(data);
                         //get customer data again here
-                        getCustomerData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        getInv();
+                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
                     }
                 });
 
@@ -2286,12 +915,12 @@ $(document).on('click', '[data-customer-deactivate]', function (e) {
                     if (data.RESPONSE_CODE == "200") {
                         console.log(data);
                         //get customer data again here
-                        getCustomerData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        getInv();
+                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
                     }
                 });
 
@@ -2356,7 +985,7 @@ function getPromoData() {
                 table_list +=
                         "<tr>" +
                         "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + toTitleCase(mainData.promo_name) + "</td>" +
+                        "<td>" + (mainData.promo_name) + "</td>" +
                         "<td>" + mainData.promo_desc + "</td>" +
                         "<td>" + mainData.start_date + "</td>" +
                         "<td>" + mainData.end_date + "</td>" +
@@ -2375,9 +1004,9 @@ function getPromoData() {
             $('#promotionTable').DataTable();
 
             hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            // displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
         } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.RESPONSE_MESSAGE));
         }
 
     });
@@ -2393,10 +1022,72 @@ function getPromoData() {
 
 }
 
+//ADD CUSTOMER FEEDBACK with contact numbber
+$(document).on('click', '[data-addFeedback-details]', function (e) {
+
+    var jsonDetails = JSON.parse($(this).attr('data-addFeedback-details'));
+
+    $("#feedbackUser").html(jsonDetails.acct_name);
+
+    $('#generateInvoiceModal').modal('show');
+
+
+    /** ADD USER API **/
+
+    $("#addFeedbackBtn").click(function (e) {
+        e.preventDefault();
+        show_modal_loader();
+        var company = $('#company').val();
+
+        if (company == "" || company == undefined) {
+            displayErrorMsgModal("Please company or project name");
+            return false;
+        } else {
+
+            $("#addFeedbackBtn").prop("disabled", true);
+
+            var request = $.ajax({
+                url: generateInvoice + company,
+                type: "GET",
+                contentType: "application/json"
+            });
+
+            request.done(function (data) {
+                if (data.status == "200") {
+                    document.getElementById("addFeedbackForm").reset();
+                    $("#addFeedbackBtn").removeAttr('disabled');
+
+                    console.log(data);
+                    //get customer data again here
+                    getInv();
+
+                    $('#addFeedbackViewModal').modal('hide');
+                    displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
+                } else {
+                    $("#addFeedbackBtn").removeAttr('disabled');
+                    console.log(data)
+                    displayErrorMsgModal((data.message)); //disp-ay Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                $("#addFeedbackBtn").removeAttr('disabled');
+                displayErrorMsgModal("Sorry, something went wrong");
+            });
+
+        }
+
+    });
+
+});
+
 
 // START OF ADMIN USERS API
 //Get users data --->>> Settings-> View Page
-function getAdminUsersData() {
+function getEmployeeUsersData() {
     show_loader();
 
     var table_list = "";
@@ -2457,7 +1148,7 @@ function getAdminUsersData() {
             $('#adminUsersTable').DataTable();
 
             hide_loader();
-            // displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            // displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
         } else {
             displayErrorMsg(data.message);
         }
@@ -2481,7 +1172,7 @@ $(document).on('click', '[data-user-edit]', function (e) {
 
     var jsonDetails = JSON.parse($(this).attr('data-user-edit'));
 
-    $('#displayEditUserName').html(toTitleCase(jsonDetails.username));
+    $('#displayEditUserName').html((jsonDetails.username));
     $('#editRoletype').val(jsonDetails.role);
 
     $('#editUserModal').modal('show');
@@ -2528,20 +1219,20 @@ $(document).on('click', '[data-user-edit]', function (e) {
             });
 
             request.done(function (data) {
-                if (data.RESPONSE_CODE == "200") {
+                if (data.status == "200") {
                     document.getElementById("editUserForm").reset();
                     $("#editUserBtn").removeAttr('disabled');
 
                     console.log(data);
                     //get admin user data again here
-                    getAdminUsersData();
+                    getEmployeeUsersData();
 
                     $('#editUserModal').modal('hide');
-                    displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                    displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
                 } else {
                     $("#editUserBtn").removeAttr('disabled');
                     console.log(data)
-                    displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                    displayErrorMsgModal((data.message)); //display Error message
                 }
             });
 
@@ -2572,8 +1263,8 @@ $(document).on('click', '[data-user-details]', function (e) {
         status = jsonDetails.status
     }
 
-    $('#displayUserFullname').html(toTitleCase(jsonDetails.userdesc));
-    $('#showAdminFullname').html(toTitleCase(jsonDetails.userdesc));
+    $('#displayUserFullname').html((jsonDetails.userdesc));
+    $('#showAdminFullname').html((jsonDetails.userdesc));
     $('#showAdminUsername').html(jsonDetails.username);
     $('#showAdminRole').html(jsonDetails.role);
     $('#showAdminStatus').html(status);
@@ -2623,12 +1314,12 @@ $(document).on('click', '[data-user-activate]', function (e) {
                     if (data.RESPONSE_CODE == "200") {
                         console.log(data);
                         //get customer data again here
-                        getAdminUsersData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        getEmployeeUsersData();
+                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
                     }
                 });
 
@@ -2680,12 +1371,12 @@ $(document).on('click', '[data-user-deactivate]', function (e) {
                     if (data.RESPONSE_CODE == "200") {
                         console.log(data);
                         //get admin user data again here
-                        getAdminUsersData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        getEmployeeUsersData();
+                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
                     }
                 });
 
@@ -2725,22 +1416,22 @@ $(document).on('click', '[data-user-delete]', function (e) {
                 show_loader();
 
                 var request = $.ajax({
-                    url: deleteAdminUserStatus,
+                    url: deleteAdminUserStatus+jsonDetails.id,
                     type: "POST",
                     data: formData,
                     contentType: "application/json"
                 });
 
                 request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
+                    if (data.status == "200") {
                         console.log(data);
                         //get admin user data again here
-                        getAdminUsersData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        getEmployeeUsersData();
+                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.message)); //display Error message
                     }
                 });
 
@@ -2757,8 +1448,8 @@ $(document).on('click', '[data-user-delete]', function (e) {
 
 
 
-//DELETE PROMOTION 
-$(document).on('click', '[data-promo-delete]', function (e) {
+//DELETE INVOICE 
+$(document).on('click', '[data-invoice-delete]', function (e) {
 
     var jsonDetails = JSON.parse($(this).attr('data-promo-delete'));
 
@@ -2770,7 +1461,7 @@ $(document).on('click', '[data-promo-delete]', function (e) {
     formData = JSON.stringify(formData);
 
     swal({
-        title: "Delete Promo?",
+        title: "Delete Invoice?",
         text: "",
         type: "warning",
         showCancelButton: true,
@@ -2783,21 +1474,21 @@ $(document).on('click', '[data-promo-delete]', function (e) {
 
                 var request = $.ajax({
                     url: deletePromoApi,
-                    type: "POST",
+                    type: "DELETE",
                     data: formData,
                     contentType: "application/json"
                 });
 
                 request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
+                    if (data.status == "200") {
                         console.log(data);
                         //get promo data again here
                         getPromoData();
-                        displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
                     } else {
                         hide_loader();
                         console.log(data)
-                        displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                        displayErrorMsg((data.message)); //display Error message
                     }
                 });
 
@@ -2888,11 +1579,11 @@ $("#addPromoBtn").click(function (e) {
                 getPromoData();
 
                 $('#addPromoViewModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#addPromoBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -2971,7 +1662,7 @@ $("#addUserBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getAdminUsersData();
+                getEmployeeUsersData();
 
                 $('#addUserModal').modal('hide');
                 displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
@@ -3055,7 +1746,7 @@ $("#assignCustomersBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getCustomerData();
+                getInv();
 
                 $('#assignCustomersModal').modal('hide');
                 displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
@@ -3145,14 +1836,14 @@ $("#tagCustomersBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getCustomerData();
+                getInv();
 
                 $('#tagCustomersModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#tagCustomersBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3230,14 +1921,14 @@ $("#untagCustomersBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getCustomerData();
+                getInv();
 
                 $('#untagCustomersModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#untagCustomersBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3296,14 +1987,14 @@ $("#deleteCustomersBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getCustomerData();
+                getInvoiceData();
 
                 $('#deleteCustomersModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#deleteCustomersBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3319,155 +2010,6 @@ $("#deleteCustomersBtn").click(function (e) {
 
 });
 
-
-
-/** PERFORMANCE API STARTS HERE **/
-
-//Get performances 
-function getAllPerformanceData(selectedMonth) {
-    show_loader();
-
-    var table_list = "";
-
-    $('#performanceViewTable').DataTable().destroy();
-    $('#performanceViewData').html("");
-
-    var formData = {
-        "month": selectedMonth
-    };
-
-    formData = JSON.stringify(formData);
-
-    console.log(formData);
-
-    var request = $.ajax({
-        url: performanceDataApi,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-//HANDLE response here
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var allData = data["RESPONSE_DATA"];
-
-            for (i = 0; i < allData.length; i++) {
-                mainData = allData[i];
-                var detailsJson = JSON.stringify(mainData);
-
-                table_list +=
-                        "<tr width='100%'>" +
-                        // since it is using colspan=2, we will have 2 tds
-
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td></td>" +
-                        // Agent Name
-                        "<td>" + mainData.agent_id + "</td>" +
-                        "<td></td>" +
-                        // Vodafone Cash
-                        "<td>" + mainData.vfcash_target + "%" + "</td>" +
-                        "<td>" + mainData.vfcash_achievement + "%" + "</td>" +
-                        // Upgrade Target
-                        "<td>" + mainData.upgrade_target + "%" + "</td>" +
-                        "<td>" + mainData.upgrade_achievement + "%" + "</td>" +
-                        // Downgrade Target
-                        "<td>" + mainData.downgrade_target + "%" + "</td>" +
-                        "<td>" + mainData.downgrade_achievement + "%" + "</td>" +
-                        // Activity Target
-                        "<td>" + mainData.activity_target + "</td>" +
-                        "<td>" + mainData.activity_actual + "</td>" +
-                        "<td>" + mainData.activity_achievement + "%" + "</td>" +
-                        // Activity Actual and Total
-
-                        "<td>" + mainData.total + "%" + "</td>" +
-                        "</tr>"
-
-            }
-
-            //Append the tables here
-            $('#performanceViewData').html(table_list);
-
-            //Base view table
-            $('#performanceViewTable').DataTable({
-                dom: 'Bfrtip',
-                scrollX: true,
-                select: true,
-                buttons: {
-                    buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
-                    dom: {
-                        container: {
-                            className: 'dt-buttons'
-                        },
-                        button: {
-                            className: 'btn btn-primary'
-                        }
-                    }
-                }
-            });
-
-            // hide_loader();
-            displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-        } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
-
-        }
-
-    });
-
-// Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        hide_loader();
-        //show the error message
-        $('#handleErrorMessages').show("fast");
-        // displayErrorMsg("Sorry, something went wrong");
-
-    });
-
-}
 
 /** TEAM RANKING API STARTS HERE **/
 
@@ -3624,9 +2166,9 @@ function getTeamRankingData(selectedMonth) {
             });
 
             // hide_loader();
-            displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
         } else {
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.RESPONSE_MESSAGE));
 
         }
 
@@ -3714,11 +2256,11 @@ $("#setGlobalTargetBtn").click(function (e) {
                 getAllPerformanceData(selectedMonth);
 
                 $('#setGlobalTargetModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#setGlobalTargetBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3793,11 +2335,11 @@ $("#setActivityTargetBtn").click(function (e) {
                 getAllPerformanceData(selectedMonth);
 
                 $('#setActivityTargetModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#setActivityTargetBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3886,11 +2428,11 @@ $("#editSetGlobalTargetBtn").click(function (e) {
                 getAllPerformanceData(selectedMonth);
 
                 $('#editGlobalTargetModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#editSetGlobalTargetBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -3965,11 +2507,11 @@ $("#editSetActivityTargetBtn").click(function (e) {
                 getAllPerformanceData(selectedMonth);
 
                 $('#editActivityTargetModal').modal('hide');
-                displaySuccessToastModal(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
             } else {
                 $("#editSetActivityTargetBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal(toTitleCase(data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
             }
         });
 
@@ -4120,12 +2662,12 @@ $("#subscriberInteractionsBtn").click(function (e) {
                 }
             });
 
-            displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
 
 
         } else {
             $("#subscriberInteractionTable").hide("fast");
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.RESPONSE_MESSAGE));
         }
 
     });
@@ -4271,12 +2813,12 @@ $("#allInteractionsBtn").click(function (e) {
                 }
             });
 
-            displaySuccessToast(toTitleCase(data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+            displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
 
 
         } else {
             $("#allInteractionTableDiv").hide("fast");
-            displayErrorMsg(toTitleCase(data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.RESPONSE_MESSAGE));
         }
 
     });
@@ -4308,7 +2850,7 @@ $.ajaxSetup({
 /** UTILITIES FUNCTIONS STARTS HERE **/
 
 //TO SENTENCE CASE
-//function toTitleCase(str) {
+//function (str) {
 //    return str.replace(
 //        /\w\S*/g,
 //        function(txt) {

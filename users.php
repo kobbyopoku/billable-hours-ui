@@ -544,7 +544,7 @@
     //Hide the error message div
     $('#handleErrorMessages').hide("fast");
     getStoredItem();
-    getAdminUsersData();
+    getEmployeeUsersData();
 
     // Append these data
     appendAgents();
