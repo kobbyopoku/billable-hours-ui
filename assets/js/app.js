@@ -162,10 +162,10 @@ $("#logoutBtn").click(function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                sessionStorage.clear();
-                window.location.href = "index.php";
-            });
+        function () {
+            sessionStorage.clear();
+            window.location.href = "index.php";
+        });
 
 });
 
@@ -183,10 +183,10 @@ $("#logoutDashBtn").click(function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                sessionStorage.clear();
-                window.location.href = "index.php";
-            });
+        function () {
+            sessionStorage.clear();
+            window.location.href = "index.php";
+        });
 
 });
 
@@ -441,7 +441,7 @@ function getEmployeeJobs() {
         type: "GET"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.status == "200") {
 
@@ -455,16 +455,16 @@ function getEmployeeJobs() {
                 editJob = "<a href='#' rel='tooltip' data-user-edit='" + detailsJson + "' class='' data-toggle='tooltip' data-placement='bottom' title='Edit Job'><i class='ti-pencil'></i></button>";
 
                 table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + mainData.id + "</td>" +
-                        "<td>" + mainData.employee.firstName + " " + mainData.employee.lastName + "</td>" +
-                        "<td>" + mainData.project + "</td>" +
-                        "<td >" + mainData.date + "</td>" +
-                        "<td>" + mainData.startTime + "</td>" +
-                        "<td>" + mainData.endTime + "</td>" +
-                        "<td>" + mainData.status + "</td>" +
-                        "<td class='td-actions' >" + deleteJob + "&nbsp;" + editJob + "</td>" +
-                        "</tr>"
+                    "<tr width='100%'>" +
+                    "<td>" + mainData.id + "</td>" +
+                    "<td>" + mainData.employee.firstName + " " + mainData.employee.lastName + "</td>" +
+                    "<td>" + mainData.project + "</td>" +
+                    "<td >" + mainData.date + "</td>" +
+                    "<td>" + mainData.startTime + "</td>" +
+                    "<td>" + mainData.endTime + "</td>" +
+                    "<td>" + mainData.status + "</td>" +
+                    "<td class='td-actions' >" + deleteJob + "&nbsp;" + editJob + "</td>" +
+                    "</tr>"
 
             }
 
@@ -479,47 +479,47 @@ function getEmployeeJobs() {
                 select: true,
                 buttons: {
                     buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
                     dom: {
                         container: {
                             className: 'dt-buttons'
@@ -531,7 +531,7 @@ function getEmployeeJobs() {
                 }
             });
 
-//            hide_loader();
+            //            hide_loader();
             displaySuccessToast((data.message), ""); //DISPLAY TOAST
         } else {
             displayErrorMsg((data.message));
@@ -539,7 +539,7 @@ function getEmployeeJobs() {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -574,7 +574,7 @@ function getInvoiceData() {
         type: "GET"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.status == "200") {
 
@@ -592,14 +592,15 @@ function getInvoiceData() {
                 // check RGS
 
                 table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + mainData.id + "</td>" +
-                        "<td>" + mainData.company + "</td>" +
-                        "<td>" + mainData.invoiceStatus + "</td>" +
-                        "<td >" + mainData.invoiceDate + "</td>" +
-                        "<td>" + mainData.itemsCount + "</td>" +
-                        "<td class='td-actions' >" + deleteInvoice + "&nbsp;" + accountDetails + "</td>" +
-                        "</tr>"
+                    "<tr width='100%'>" +
+                    "<td>" + mainData.id + "</td>" +
+                    "<td>" + mainData.company + "</td>" +
+                    "<td>" + mainData.totalAmount + "</td>" +
+                    "<td>" + mainData.invoiceStatus + "</td>" +
+                    "<td >" + mainData.invoiceDate + "</td>" +
+                    "<td>" + mainData.itemsCount + "</td>" +
+                    "<td class='td-actions' >" + deleteInvoice + "&nbsp;" + accountDetails + "</td>" +
+                    "</tr>"
 
             }
 
@@ -613,47 +614,47 @@ function getInvoiceData() {
                 select: true,
                 buttons: {
                     buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
                     dom: {
                         container: {
                             className: 'dt-buttons'
@@ -665,7 +666,7 @@ function getInvoiceData() {
                 }
             });
 
-//            hide_loader();
+            //            hide_loader();
             displaySuccessToast((data.message), ""); //DISPLAY TOAST
         } else {
             displayErrorMsg((data.message));
@@ -673,7 +674,7 @@ function getInvoiceData() {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -722,37 +723,37 @@ $(document).on('click', '[data-customer-activate]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: updateCustomerStatus,
-                    type: "POST",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
-                        console.log(data);
-                        //get customer data again here
-                        getInv();
-                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: updateCustomerStatus,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.RESPONSE_CODE == "200") {
+                    console.log(data);
+                    //get customer data again here
+                    getInv();
+                    displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -779,37 +780,37 @@ $(document).on('click', '[data-customer-deactivate]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: updateCustomerStatus,
-                    type: "POST",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
-                        console.log(data);
-                        //get customer data again here
-                        getInv();
-                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: updateCustomerStatus,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.RESPONSE_CODE == "200") {
+                    console.log(data);
+                    //get customer data again here
+                    getInv();
+                    displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -836,7 +837,7 @@ function getPromoData() {
         type: "GET"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.RESPONSE_CODE == "200") {
 
@@ -861,17 +862,17 @@ function getPromoData() {
                 }
 
                 table_list +=
-                        "<tr>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + (mainData.promo_name) + "</td>" +
-                        "<td>" + mainData.promo_desc + "</td>" +
-                        "<td>" + mainData.start_date + "</td>" +
-                        "<td>" + mainData.end_date + "</td>" +
-                        "<td>" + trafficLight + "</td>" +
-                        "<td>" + mainData.created_by + "</td>" +
-                        // "<td class='td-actions'>"+activeState+"&nbsp;"+deletePromo+"&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions'>" + deletePromo + "</td>" +
-                        "</tr>"
+                    "<tr>" +
+                    "<td>" + parseInt(i + 1) + "</td>" +
+                    "<td>" + (mainData.promo_name) + "</td>" +
+                    "<td>" + mainData.promo_desc + "</td>" +
+                    "<td>" + mainData.start_date + "</td>" +
+                    "<td>" + mainData.end_date + "</td>" +
+                    "<td>" + trafficLight + "</td>" +
+                    "<td>" + mainData.created_by + "</td>" +
+                    // "<td class='td-actions'>"+activeState+"&nbsp;"+deletePromo+"&nbsp;"+moreDetails+ "</td>"+
+                    "<td class='td-actions'>" + deletePromo + "</td>" +
+                    "</tr>"
 
             }
 
@@ -889,7 +890,7 @@ function getPromoData() {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -899,68 +900,6 @@ function getPromoData() {
     });
 
 }
-
-//ADD CUSTOMER FEEDBACK with contact numbber
-$(document).on('click', '[data-addFeedback-details]', function (e) {
-
-    var jsonDetails = JSON.parse($(this).attr('data-addFeedback-details'));
-
-    $("#feedbackUser").html(jsonDetails.acct_name);
-
-    $('#generateInvoiceModal').modal('show');
-
-
-    /** ADD USER API **/
-
-    $("#addFeedbackBtn").click(function (e) {
-        e.preventDefault();
-        show_modal_loader();
-        var company = $('#company').val();
-
-        if (company == "" || company == undefined) {
-            displayErrorMsgModal("Please company or project name");
-            return false;
-        } else {
-
-            $("#addFeedbackBtn").prop("disabled", true);
-
-            var request = $.ajax({
-                url: generateInvoice + company,
-                type: "GET",
-                contentType: "application/json"
-            });
-
-            request.done(function (data) {
-                if (data.status == "200") {
-                    document.getElementById("addFeedbackForm").reset();
-                    $("#addFeedbackBtn").removeAttr('disabled');
-
-                    console.log(data);
-                    //get customer data again here
-                    getInv();
-
-                    $('#addFeedbackViewModal').modal('hide');
-                    displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
-                } else {
-                    $("#addFeedbackBtn").removeAttr('disabled');
-                    console.log(data)
-                    displayErrorMsgModal((data.message)); //disp-ay Error message
-                }
-            });
-
-            // Handle when it failed to connect
-            request.fail(function (jqXHR, textStatus) {
-                console.log(textStatus);
-                //show the error message
-                $("#addFeedbackBtn").removeAttr('disabled');
-                displayErrorMsgModal("Sorry, something went wrong");
-            });
-
-        }
-
-    });
-
-});
 
 
 // START OF ADMIN USERS API
@@ -980,7 +919,7 @@ function getEmployeeUsersData() {
         type: "GET"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.status == "200") {
 
@@ -1004,16 +943,16 @@ function getEmployeeUsersData() {
                 }
 
                 table_list +=
-                        "<tr>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + mainData.firstName + "</td>" +
-                        "<td>" + mainData.lastName + "</td>" +
-                        "<td>" + mainData.role + "</td>" +
-                        "<td>" + mainData.email + "</td>" +
-                        "<td>" + mainData.grade + "</td>" +
-                        "<td>" + mainData.rate + "</td>" +
-                        "<td class='td-actions'>" + activeState + "&nbsp;" + editUser + "&nbsp;" + deleteUser + "&nbsp;" + moreDetails + "</td>" +
-                        "</tr>"
+                    "<tr>" +
+                    "<td>" + parseInt(i + 1) + "</td>" +
+                    "<td>" + mainData.firstName + "</td>" +
+                    "<td>" + mainData.lastName + "</td>" +
+                    "<td>" + mainData.role + "</td>" +
+                    "<td>" + mainData.email + "</td>" +
+                    "<td>" + mainData.grade + "</td>" +
+                    "<td>" + mainData.rate + "</td>" +
+                    "<td class='td-actions'>" + activeState + "&nbsp;" + editUser + "&nbsp;" + deleteUser + "&nbsp;" + moreDetails + "</td>" +
+                    "</tr>"
 
             }
 
@@ -1031,7 +970,7 @@ function getEmployeeUsersData() {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -1176,37 +1115,37 @@ $(document).on('click', '[data-user-activate]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: updateAdminUserStatus,
-                    type: "POST",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
-                        console.log(data);
-                        //get customer data again here
-                        getEmployeeUsersData();
-                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: updateAdminUserStatus,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.RESPONSE_CODE == "200") {
+                    console.log(data);
+                    //get customer data again here
+                    getEmployeeUsersData();
+                    displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -1233,37 +1172,37 @@ $(document).on('click', '[data-user-deactivate]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: updateAdminUserStatus,
-                    type: "POST",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.RESPONSE_CODE == "200") {
-                        console.log(data);
-                        //get admin user data again here
-                        getEmployeeUsersData();
-                        displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: updateAdminUserStatus,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.RESPONSE_CODE == "200") {
+                    console.log(data);
+                    //get admin user data again here
+                    getEmployeeUsersData();
+                    displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.RESPONSE_MESSAGE)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -1288,37 +1227,37 @@ $(document).on('click', '[data-user-delete]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: deleteAdminUserStatus + jsonDetails.id,
-                    type: "POST",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.status == "200") {
-                        console.log(data);
-                        //get admin user data again here
-                        getEmployeeUsersData();
-                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.message)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: deleteAdminUserStatus + jsonDetails.id,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.status == "200") {
+                    console.log(data);
+                    //get admin user data again here
+                    getEmployeeUsersData();
+                    displaySuccessToast((data.message), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.message)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -1337,35 +1276,35 @@ $(document).on('click', '[data-job-delete]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: deleteJob + jsonDetails.id,
-                    type: "DELETE",
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.status == "200") {
-                        console.log(data);
-                        //get admin user data again here
-                        getEmployeeUsersData();
-                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.message)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
+            var request = $.ajax({
+                url: deleteJob + jsonDetails.id,
+                type: "DELETE",
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.status == "200") {
+                    console.log(data);
+                    //get admin user data again here
+                    getEmployeeUsersData();
+                    displaySuccessToast((data.message), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.message)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+        });
 });
 
 
@@ -1462,37 +1401,37 @@ $(document).on('click', '[data-invoice-delete]', function (e) {
         showLoaderOnConfirm: true,
         confirmButtonText: "Yes"
     },
-            function () {
-                show_loader();
+        function () {
+            show_loader();
 
-                var request = $.ajax({
-                    url: deletePromoApi,
-                    type: "DELETE",
-                    data: formData,
-                    contentType: "application/json"
-                });
-
-                request.done(function (data) {
-                    if (data.status == "200") {
-                        console.log(data);
-                        //get promo data again here
-                        getPromoData();
-                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
-                    } else {
-                        hide_loader();
-                        console.log(data)
-                        displayErrorMsg((data.message)); //display Error message
-                    }
-                });
-
-                // Handle when it failed to connect
-                request.fail(function (jqXHR, textStatus) {
-                    console.log(textStatus);
-                    //show the error message
-                    displayErrorMsg("Sorry, something went wrong");
-                });
-
+            var request = $.ajax({
+                url: deletePromoApi,
+                type: "DELETE",
+                data: formData,
+                contentType: "application/json"
             });
+
+            request.done(function (data) {
+                if (data.status == "200") {
+                    console.log(data);
+                    //get promo data again here
+                    getPromoData();
+                    displaySuccessToast((data.message), ""); //DISPLAY TOAST
+                } else {
+                    hide_loader();
+                    console.log(data)
+                    displayErrorMsg((data.message)); //display Error message
+                }
+            });
+
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                displayErrorMsg("Sorry, something went wrong");
+            });
+
+        });
 
 });
 
@@ -1542,14 +1481,14 @@ $("#addPromoBtn").click(function (e) {
 
         $("#addPromoBtn").prop("disabled", true);
         var formData =
-                {
-                    "promo_name": addPromoName,
-                    "promo_desc": addPromoDescription,
-                    "createdby": createdby,
-                    "start_date": addPromoStartDate,
-                    "endDate": addPromoEndDate,
-                    "status": addPromoStatus
-                };
+        {
+            "promo_name": addPromoName,
+            "promo_desc": addPromoDescription,
+            "createdby": createdby,
+            "start_date": addPromoStartDate,
+            "endDate": addPromoEndDate,
+            "status": addPromoStatus
+        };
 
         formData = JSON.stringify(formData);
 
@@ -1619,11 +1558,11 @@ $("#addUserBtn").click(function (e) {
     }
 
     if ((firstName == "" || firstName == undefined) ||
-            (lastName == "" || lastName == undefined) ||
-            (rate == "" || rate == undefined) ||
-            (grade == "" || grade == undefined) ||
-            (role == "" || role == undefined) ||
-            (email == "" || email == undefined)) {
+        (lastName == "" || lastName == undefined) ||
+        (rate == "" || rate == undefined) ||
+        (grade == "" || grade == undefined) ||
+        (role == "" || role == undefined) ||
+        (email == "" || email == undefined)) {
         displayErrorMsgModal("All fields are required"); //display Error message
         return false;
     } else {
@@ -1705,9 +1644,9 @@ $("#assignCustomersBtn").click(function (e) {
         displayErrorMsgModal("Please select an agent"); //display Error message
         return false;
     } else if ((projectName == "" || projectName == undefined) ||
-            (projectDate == "" || projectDate == undefined) ||
-            (endTime == "" || endTime == undefined) ||
-            (startTime == "" || startTime == undefined)) {
+        (projectDate == "" || projectDate == undefined) ||
+        (endTime == "" || endTime == undefined) ||
+        (startTime == "" || startTime == undefined)) {
         displayErrorMsgModal("Please fill all inputs"); //display Error message
         return false;
     } else {
@@ -1762,92 +1701,40 @@ $("#assignCustomersBtn").click(function (e) {
 
 
 
-// TAG CUSTOMERS API
-$("#tagCustomersBtn").click(function (e) {
+// GENERATE INVOICE
+$("#generateInvoice").click(function (e) {
     e.preventDefault();
     show_modal_loader();
-    var tagPromoName = $('#tagPromoName').val();
-    var customerBadgeLabel = $('#customerBadgeLabel').val();
-    // var customer_list = $('#selectCustomers').val();
+    var company = $('#company').val();
 
-    var assignedBy = "";
-
-
-    // console.log("Customer list is ");
-    // console.log(parsedata.slice(0, -1));
-
-    // Use slice to remove the last item in the array because it is empty
-    var customer_list = tagCustomersParsedata.slice(0, -1);
-
-    // console.log("seeeee")
-    // console.log(customer_list)
-
-
-    // Get saved data from sessionStorage
-    var storedUsername = sessionStorage.getItem('username');
-
-    if (storedUsername != "" || storedUsername != undefined) {
-        assignedBy = storedUsername;
-    } else {
-        //It means username is not found in storage
-        displayErrorMsgModal("Sorry, could not find name of who assigned customers"); //display Error message
-        return false;
-    }
-
-    if (tagPromoName == "" || tagPromoName == undefined) {
-        displayErrorMsgModal("Please enter your promo name"); //display Error message
-        return false;
-    } else if (customer_list.length == 0 || customer_list == undefined) {
-        displayErrorMsgModal("Please upload your csv file"); //display Error message
+    if (company == "" || company == undefined) {
+        displayErrorMsgModal("Please enter project name"); //display Error message
         return false;
     } else {
-
-        $("#tagCustomersBtn").prop("disabled", true);
-        var formData = {
-            "manager": assignedBy,
-            "promo_name": tagPromoName,
-            "customer_list": customer_list
-        };
-
-        formData = JSON.stringify(formData);
-
-        console.log(formData);
 
         var request = $.ajax({
-            url: tagCustomersApi,
-            type: "POST",
-            data: formData,
+            url: generateInvoice + company,
+            type: "GET",
             contentType: "application/json"
         });
 
         request.done(function (data) {
-            if (data.RESPONSE_CODE == "200") {
-                document.getElementById("tagCustomersForm").reset();
-                $("#tagCustomersBtn").removeAttr('disabled');
+            if (data.status == "200") {
 
                 console.log(data);
-                //get admin user data again here
-                getInv();
-
-                $('#tagCustomersModal').modal('hide');
-                displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+                displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
             } else {
-                $("#tagCustomersBtn").removeAttr('disabled');
                 console.log(data)
-                displayErrorMsgModal((data.RESPONSE_MESSAGE)); //display Error message
+                displayErrorMsgModal((data.message)); //display Error message
             }
         });
 
         // Handle when it failed to connect
         request.fail(function (jqXHR, textStatus) {
             console.log(textStatus);
-            //show the error message
-            $("#tagCustomersBtn").removeAttr('disabled');
             displayErrorMsgModal("Sorry, something went wrong");
         });
-
     }
-
 });
 
 // UNTAG CUSTOMERS
@@ -1912,7 +1799,6 @@ $("#untagCustomersBtn").click(function (e) {
 
                 console.log(data);
                 //get admin user data again here
-                getInv();
 
                 $('#untagCustomersModal').modal('hide');
                 displaySuccessToastModal((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
@@ -2028,7 +1914,7 @@ function getTeamRankingData(selectedMonth) {
         contentType: "application/json"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.RESPONSE_CODE == "200") {
 
@@ -2078,16 +1964,16 @@ function getTeamRankingData(selectedMonth) {
                 if (overallRank != "" && vfc != "" && upg != "" && dom != "" && act != "") {
 
                     table_list +=
-                            "<tr width='100%'>" +
-                            // since it is using colspan=2, we will have 2 tds
+                        "<tr width='100%'>" +
+                        // since it is using colspan=2, we will have 2 tds
 
-                            "<td>" + parseInt(r += 1) + "</td>" +
-                            "<td>" + vfc + "</td>" +
-                            "<td>" + upg + "</td>" +
-                            "<td>" + dom + "</td>" +
-                            "<td>" + act + "</td>" +
-                            "<td>" + overallRank + "</td>" +
-                            "</tr>"
+                        "<td>" + parseInt(r += 1) + "</td>" +
+                        "<td>" + vfc + "</td>" +
+                        "<td>" + upg + "</td>" +
+                        "<td>" + dom + "</td>" +
+                        "<td>" + act + "</td>" +
+                        "<td>" + overallRank + "</td>" +
+                        "</tr>"
 
                 }
 
@@ -2104,47 +1990,47 @@ function getTeamRankingData(selectedMonth) {
                 select: true,
                 buttons: {
                     buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
                     dom: {
                         container: {
                             className: 'dt-buttons'
@@ -2165,7 +2051,7 @@ function getTeamRankingData(selectedMonth) {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -2565,7 +2451,7 @@ $("#subscriberInteractionsBtn").click(function (e) {
         contentType: "application/json"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.RESPONSE_CODE == "200") {
 
@@ -2576,16 +2462,16 @@ $("#subscriberInteractionsBtn").click(function (e) {
                 var detailsJson = JSON.stringify(mainData);
 
                 table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + mainData.agent_id + "</td>" +
-                        "<td>" + mainData.customer_id + "</td>" +
-                        "<td >" + mainData.fixedline_number + "</td>" +
-                        "<td>" + mainData.cus_feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.rm_comment + "</td>" +
-                        "<td>" + mainData.date + "</td>" +
-                        "</tr>"
+                    "<tr width='100%'>" +
+                    "<td>" + parseInt(i + 1) + "</td>" +
+                    "<td>" + mainData.agent_id + "</td>" +
+                    "<td>" + mainData.customer_id + "</td>" +
+                    "<td >" + mainData.fixedline_number + "</td>" +
+                    "<td>" + mainData.cus_feedback + "</td>" +
+                    "<td>" + mainData.reason_locked + "</td>" +
+                    "<td>" + mainData.rm_comment + "</td>" +
+                    "<td>" + mainData.date + "</td>" +
+                    "</tr>"
 
             }
 
@@ -2601,47 +2487,47 @@ $("#subscriberInteractionsBtn").click(function (e) {
                 select: true,
                 buttons: {
                     buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
                     dom: {
                         container: {
                             className: 'dt-buttons'
@@ -2663,7 +2549,7 @@ $("#subscriberInteractionsBtn").click(function (e) {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -2716,7 +2602,7 @@ $("#allInteractionsBtn").click(function (e) {
         contentType: "application/json"
     });
 
-//HANDLE response here
+    //HANDLE response here
     request.done(function (data) {
         if (data.RESPONSE_CODE == "200") {
 
@@ -2727,16 +2613,16 @@ $("#allInteractionsBtn").click(function (e) {
                 var detailsJson = JSON.stringify(mainData);
 
                 table_list +=
-                        "<tr width='100%'>" +
-                        "<td>" + parseInt(i + 1) + "</td>" +
-                        "<td>" + mainData.agent_id + "</td>" +
-                        "<td>" + mainData.customer_id + "</td>" +
-                        "<td >" + mainData.fixedline_number + "</td>" +
-                        "<td>" + mainData.cus_feedback + "</td>" +
-                        "<td>" + mainData.reason_locked + "</td>" +
-                        "<td>" + mainData.rm_comment + "</td>" +
-                        "<td>" + mainData.date + "</td>" +
-                        "</tr>"
+                    "<tr width='100%'>" +
+                    "<td>" + parseInt(i + 1) + "</td>" +
+                    "<td>" + mainData.agent_id + "</td>" +
+                    "<td>" + mainData.customer_id + "</td>" +
+                    "<td >" + mainData.fixedline_number + "</td>" +
+                    "<td>" + mainData.cus_feedback + "</td>" +
+                    "<td>" + mainData.reason_locked + "</td>" +
+                    "<td>" + mainData.rm_comment + "</td>" +
+                    "<td>" + mainData.date + "</td>" +
+                    "</tr>"
 
             }
 
@@ -2752,47 +2638,47 @@ $("#allInteractionsBtn").click(function (e) {
                 select: true,
                 buttons: {
                     buttons: [{
-                            extend: 'copy',
-                            text: 'Copy',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'excel',
-                            text: 'Excel',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'csv',
-                            text: 'Csv',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'pdf',
-                            text: 'Pdf',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true
-                        }, {
-                            extend: 'print',
-                            text: 'Print',
-                            title: $('h1').text(),
-                            exportOptions: {
-                                columns: ':not(.no-print)'
-                            },
-                            footer: true,
-                            autoPrint: true
-                        }],
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
                     dom: {
                         container: {
                             className: 'dt-buttons'
@@ -2814,7 +2700,7 @@ $("#allInteractionsBtn").click(function (e) {
 
     });
 
-// Handle when it failed to connect
+    // Handle when it failed to connect
     request.fail(function (jqXHR, textStatus) {
         console.log(textStatus);
         hide_loader();
@@ -2870,12 +2756,12 @@ function getBoolean(value) {
  *Show Loader Functions
  */
 function show_loader() {
-//    if (msg == '' || msg == undefined){
-//        msg="Loading...";
-//    }
+    //    if (msg == '' || msg == undefined){
+    //        msg="Loading...";
+    //    }
     $(".loader").html('<div align="center" style="margin:0 auto; margin-top:30px;" class="text-center">' +
-            '<div class="-spinner-ring -error-"></div>' +
-            '</div>')
+        '<div class="-spinner-ring -error-"></div>' +
+        '</div>')
     $(".loader").show("fast");
 }
 
@@ -2891,7 +2777,7 @@ function displaySuccessMsg(msg) {
     hide_loader();
 
     $(".msgAlertPlaceHolder").html("<div class='alert alert-success alert-dismissable fadeIn'><p class='text-center'>" +
-            msg + "</p></div>");
+        msg + "</p></div>");
     setTimeout(function () {
         $(".msgAlertPlaceHolder").html('');
     }, 7000);
@@ -2900,7 +2786,7 @@ function displaySuccessMsg(msg) {
 function displayErrorMsg(msg) {
     hide_loader();
     $(".msgAlertPlaceHolder").html("<div class='alert alert-danger alert-dismissable fadeIn'><p class='text-center'>" +
-            msg + "</p></div>");
+        msg + "</p></div>");
     $(".loader").show('fast');
     setTimeout(function () {
         $(".msgAlertPlaceHolder").html('');
@@ -2926,12 +2812,12 @@ function displaySuccessToast(head, msg) {
  *Show Modal Loader Functions
  */
 function show_modal_loader() {
-//    if (msg == '' || msg == undefined){
-//        msg="Loading...";
-//    }
+    //    if (msg == '' || msg == undefined){
+    //        msg="Loading...";
+    //    }
     $(".modal_loader").html('<div align="center" style="margin:0 auto; margin-top:30px;" class="text-center">' +
-            '<div class="-spinner-ring -error-"></div>' +
-            '</div>')
+        '<div class="-spinner-ring -error-"></div>' +
+        '</div>')
     $(".modal_loader").show("fast");
 }
 
@@ -2948,7 +2834,7 @@ function displayErrorMsgModal(msg) {
     hide_modal_loader();
 
     $(".modalAlertPlaceHolder").html("<div class='alert alert-danger alert-dismissable fadeIn'><p class='text-left'>" +
-            msg + "</p></div>");
+        msg + "</p></div>");
     setTimeout(function () {
         $(".modalAlertPlaceHolder").html('');
     }, 5000);
