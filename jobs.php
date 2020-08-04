@@ -179,6 +179,104 @@
                     </div>
                 </div>
             </div>
+
+
+
+            <!-- Delete Customers from main base -->
+            <div id="deleteJobModal" class="modal modal-xl fade" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Delete Job</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="deleteCustomersForm">
+                                <div class="form-group row d-flex align-items-center mb-5">
+                                    <div class="col-md-12">
+                                        <label class="form-control-label">Customer File (<span style="color:#E00021;">CSV format
+                                                only</span>)</label>
+                                        <div class="form-group">
+                                            <input type="file" class="form-control" id="deleteCustomerCsv" accept=".csv" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!--Loader and notification messages-->
+                            <div class="modal_loader" style="display: none;">
+                                <div align="center" style="margin-bottom:15px;" class="">
+                                    <div class="-spinner-ring -error-"></div>
+                                    <h5><span class="modalAlertPlaceHolder"></span></h5>
+                                </div>
+                            </div>
+
+                            <div align="center">
+                                <h5><span class="modalAlertPlaceHolder"></span></h5>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger btn-gradient-01 waves-effect waves-light"
+                                    id="deleteCustomersBtn">Delete Customers</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- /.modal to edit users-->
+            <div id="editUserModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true" style="display: none;">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit <span id="displayEditUserName"></span></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="editUserForm">
+                                <div class="form-group row d-flex align-items-center mb-5">
+
+                                    <div class="col-md-12">
+                                        <label class="form-control-label">Role</label>
+                                        <div class="form-group">
+                                            <select class="custom-select-roletype form-control" id="editRoletype" name="editRoletype">
+                                                <option value="">Select role</option>
+                                                <option value="Super Admin">Super Admin</option>
+                                                <option value="Manager">Manager</option>
+                                                <option value="Agent">Agent</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!--Loader and notification messages-->
+                            <div class="modal_loader" style="display: none;">
+                                <div align="center" style="margin-bottom:15px;" class="">
+                                    <div class="-spinner-ring -error-"></div>
+                                    <h5><span class="modalAlertPlaceHolder"></span></h5>
+                                </div>
+                            </div>
+
+                            <div align="center">
+                                <h5><span class="modalAlertPlaceHolder"></span></h5>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger btn-gradient-01 waves-effect waves-light" id="editUserBtn">Edit
+                                User</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
 

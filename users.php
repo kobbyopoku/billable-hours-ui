@@ -31,21 +31,6 @@
       <!-- End Left Sidebar -->
       <div class="content-inner">
         <div class="container-fluid">
-          <!-- Begin Page Header-->
-          <!--  <div class="row">
-                         <div class="page-header">
-                                 <div class="d-flex align-items-center">
-                                     <h2 class="page-header-title">Hello <span id="showUsername"></span></h2>
-                                 <div>
-                                     <ul class="breadcrumb">
-                                         <li class="breadcrumb-item"><a href="#"><i class="ti ti-home"></i></a> Dashboard</li>
-                                         <li class="breadcrumb-item active">Base view</li>
-                                     </ul>
-                                 </div>	                            
-                             </div>
-                         </div>
-                     </div> -->
-          <!-- End Page Header -->
           <!-- Begin Row -->
           <div class="row">
             <!-- -->

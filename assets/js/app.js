@@ -10,7 +10,8 @@ var assignCustomersApi = baseUrl + apiRoute + "job/employee/";
 var customerDataApi = baseUrl + apiRoute + "invoices";
 var jobsDataApi = baseUrl + apiRoute + "jobs";
 var generateInvoice = baseUrl + apiRoute + "invoice/generate/";
-var deleteAdminUserStatus  = baseUrl + apiRoute + "employee/"
+var deleteAdminUserStatus = baseUrl + apiRoute + "employee/"
+var deleteJob = baseUrl + apiRoute + "jobs/"
 
 
 var subscriberStartDate = "";
@@ -426,19 +427,8 @@ function getEmployeeJobs() {
     show_loader();
 
     var table_list = "";
-    var assignedAgent = "";
-    var trafficLight = "";
-    var accountDetails = "";
-    var moreDetails = "";
-    var feedBacks = "";
-    var displayRgs = "";
-    // Counts for the cards
-    var activeRgsBase = 0;
-    var nonActiveRgsBase = 0;
-    var inactiveBase = 0;
-    var suspendedBase = 0;
-    var preDeactiveBase = 0;
-    var lockedBase = 0;
+    var editJob = "";
+    var deleteJob = "";
 
     $('#baseViewExportTable').DataTable().destroy();
     $('#customerDataTable').html("");
@@ -461,21 +451,8 @@ function getEmployeeJobs() {
                 mainData = allData[i];
                 var detailsJson = JSON.stringify(mainData);
 
-                if (mainData.status == "ACTIVE") {
-                    // trafficLight = "<i class='la la-circle trans_success' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='ACTIVE'></i>";
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    moreDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-deactivate='"+detailsJson+"' class='' data-toggle='tooltip' data-placement='bottom' title='Deactivate Customer'><i class='ti-close'></i></a>";
-                } else {
-                    feedBacks = "<a href='#' rel='tooltip' data-feedBack-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-comment-alt'></i></a>";
-                    // trafficLight = "<i class='la la-circle trans_failed' aria-hidden='true' data-toggle='tooltip' data-placement='bottom' title='INACTIVE'></i>";
-                    moreDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' ><i class='ti-more'></i></a>";
-                    accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='More Details' style='text-decoration: underline !important;'>" + mainData.accountno + "</a>";
-                    // activeState = "<a href='#' rel='tooltip' data-customer-activate='"+detailsJson+"'' class='' data-toggle='tooltip' data-placement='bottom' title='Activate Customer' ><i class='ti-check'></i></a>";
-                }
-
-                // check RGS
+                deleteJob = "<a href='#' rel='tooltip' data-job-delete='" + detailsJson + "' class='' data-toggle='tooltip' data-placement='bottom' title='Delete Job'><i class='ti-trash'></i></button>";
+                editJob = "<a href='#' rel='tooltip' data-user-edit='" + detailsJson + "' class='' data-toggle='tooltip' data-placement='bottom' title='Edit Job'><i class='ti-pencil'></i></button>";
 
                 table_list +=
                         "<tr width='100%'>" +
@@ -486,19 +463,11 @@ function getEmployeeJobs() {
                         "<td>" + mainData.startTime + "</td>" +
                         "<td>" + mainData.endTime + "</td>" +
                         "<td>" + mainData.status + "</td>" +
-                        // "<td class='td-actions' width='100%'>"+activeState+"&nbsp;"+feedBacks+ "&nbsp;"+moreDetails+ "</td>"+
-                        "<td class='td-actions' >" + feedBacks + "&nbsp;" + moreDetails + "</td>" +
+                        "<td class='td-actions' >" + deleteJob + "&nbsp;" + editJob + "</td>" +
                         "</tr>"
 
             }
 
-            // Append the counts for each of the cards here
-            $("#activeRgsBase").html(activeRgsBase);
-            $("#nonActiveRgsBase").html(nonActiveRgsBase);
-            $("#inactiveBase").html(inactiveBase);
-            $("#suspendedBase").html(suspendedBase);
-            $("#preDeactiveBase").html(preDeactiveBase);
-            $("#lockedBase").html(lockedBase);
 
             //Append the tables here
             $('#customerDataTable').html(table_list);
@@ -562,10 +531,10 @@ function getEmployeeJobs() {
                 }
             });
 
-            hide_loader();
-            // displaySuccessToast((data.RESPONSE_MESSAGE), ""); //DISPLAY TOAST
+//            hide_loader();
+            displaySuccessToast((data.message), ""); //DISPLAY TOAST
         } else {
-            displayErrorMsg((data.RESPONSE_MESSAGE));
+            displayErrorMsg((data.message));
         }
 
     });
@@ -618,7 +587,7 @@ function getInvoiceData() {
 
                 deleteInvoice = "<a href='#' rel='tooltip' data-invoice-delete='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-trash'></i></a>";
                 accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='View Invoice' style='text-decoration: underline !important;'><i class='ti-eye'></i></a>";
-                
+
 
                 // check RGS
 
@@ -629,7 +598,6 @@ function getInvoiceData() {
                         "<td>" + mainData.invoiceStatus + "</td>" +
                         "<td >" + mainData.invoiceDate + "</td>" +
                         "<td>" + mainData.itemsCount + "</td>" +
-                        
                         "<td class='td-actions' >" + deleteInvoice + "&nbsp;" + accountDetails + "</td>" +
                         "</tr>"
 
@@ -698,7 +666,7 @@ function getInvoiceData() {
             });
 
 //            hide_loader();
-             displaySuccessToast((data.message), ""); //DISPLAY TOAST
+            displaySuccessToast((data.message), ""); //DISPLAY TOAST
         } else {
             displayErrorMsg((data.message));
         }
@@ -725,97 +693,7 @@ $(document).on('click', '[data-invoice-details]', function (e) {
     $('#showAccountNo').html(jsonDetails.unitPrice);
     $('#showAccountName').html((jsonDetails.cost));
 
-    $('#moreDetailsCustomerData').modal('show');
-
-});
-
-// VIEW FEEDBACKS BY AGENTS FOR EACH CUSTOMER
-$(document).on('click', '[data-feedBack-details]', function (e) {
-    //Empty the body of the feedback table  
-    $('#feedbackTableData').html("");
-
-    var jsonDetails = JSON.parse($(this).attr('data-feedBack-details'));
-    var customerId = jsonDetails.accountno;
-
-    var formData = {
-        "customer_id": customerId
-    };
-
-    formData = JSON.stringify(formData);
-
-    var request = $.ajax({
-        url: getFeedbackByAgents,
-        type: "POST",
-        data: formData,
-        contentType: "application/json"
-    });
-
-    request.done(function (data) {
-        if (data.RESPONSE_CODE == "200") {
-
-            var table_list = "";
-
-            var allFeedbacks = data["RESPONSE_DATA"];
-
-            if (allFeedbacks.length == 0) {
-                swal({
-                    title: "No feedback available",
-                    text: "",
-                    type: "warning",
-                    showCancelButton: false,
-                    closeOnConfirm: true,
-                    showLoaderOnConfirm: false,
-                    confirmButtonText: "Ok"
-                });
-
-            } else {
-
-                for (i = 0; i < allFeedbacks.length; i++) {
-                    var displayFeedback = allFeedbacks[i];
-                    table_list +=
-                            "<tr>" +
-                            "<td>" + parseInt(i + 1) + "</td>" +
-                            "<td>" + displayFeedback.cus_feedback + "</td>" +
-                            "<td>" + displayFeedback.reason_locked + "</td>" +
-                            "<td>" + displayFeedback.rm_comment + "</td>" +
-                            "<td>" + displayFeedback.date + "</td>" +
-                            "</tr>"
-                }
-
-                // Show these fields
-                $('#showFeedbackAgentName').html(jsonDetails.agent);
-                $('#showCustomerAccountNo').html(jsonDetails.accountno);
-
-                $('#feedbackTableData').html(table_list);
-                $('#feedBackModal').modal('show');
-
-            }
-
-
-        } else {
-            hide_loader();
-            $('#feedBackModal').modal('hide');
-            swal({
-                title: "No feedback available",
-                text: "",
-                type: "warning",
-                showCancelButton: false,
-                closeOnConfirm: true,
-                showLoaderOnConfirm: false,
-                confirmButtonText: "Ok"
-            });
-        }
-    });
-
-    // Handle when it failed to connect
-    request.fail(function (jqXHR, textStatus) {
-        console.log(textStatus);
-        $('#feedBackModal').modal('hide');
-        //show the error message
-        displayErrorMsg("Sorry, something went wrong");
-    });
-
-
+    $('#addFeedbackViewModal').modal('show');
 
 });
 
@@ -1091,11 +969,9 @@ function getEmployeeUsersData() {
     show_loader();
 
     var table_list = "";
-    var trafficLight = "";
     var deleteUser = "";
     var editUser = "";
     var moreDetails = "";
-    var dateUpdated = "";
     var formData = {};
     formData = JSON.stringify(formData);
 
@@ -1416,7 +1292,7 @@ $(document).on('click', '[data-user-delete]', function (e) {
                 show_loader();
 
                 var request = $.ajax({
-                    url: deleteAdminUserStatus+jsonDetails.id,
+                    url: deleteAdminUserStatus + jsonDetails.id,
                     type: "POST",
                     data: formData,
                     contentType: "application/json"
@@ -1446,6 +1322,123 @@ $(document).on('click', '[data-user-delete]', function (e) {
 
 });
 
+
+//DELETE JOB DATA
+$(document).on('click', '[data-job-delete]', function (e) {
+
+    var jsonDetails = JSON.parse($(this).attr('data-job-delete'));
+
+    swal({
+        title: "Delete Job?",
+        text: "",
+        type: "warning",
+        showCancelButton: true,
+        closeOnConfirm: true,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "Yes"
+    },
+            function () {
+                show_loader();
+
+                var request = $.ajax({
+                    url: deleteJob + jsonDetails.id,
+                    type: "DELETE",
+                    contentType: "application/json"
+                });
+
+                request.done(function (data) {
+                    if (data.status == "200") {
+                        console.log(data);
+                        //get admin user data again here
+                        getEmployeeUsersData();
+                        displaySuccessToast((data.message), ""); //DISPLAY TOAST
+                    } else {
+                        hide_loader();
+                        console.log(data)
+                        displayErrorMsg((data.message)); //display Error message
+                    }
+                });
+
+                // Handle when it failed to connect
+                request.fail(function (jqXHR, textStatus) {
+                    console.log(textStatus);
+                    //show the error message
+                    displayErrorMsg("Sorry, something went wrong");
+                });
+            });
+});
+
+
+//EDIT ADMIN USER ROLE
+$(document).on('click', '[data-job-edit]', function (e) {
+    var jsonDetails = JSON.parse($(this).attr('data-job-edit'));
+    $('#displayEditUserName').html((jsonDetails.username));
+    $('#editRoletype').val(jsonDetails.role);
+    $('#editUserModal').modal('show');
+
+    // edit user role here
+
+    $("#editUserBtn").click(function (e) {
+        e.preventDefault();
+        show_modal_loader();
+        var role = $('#editRoletype').val();
+        var createdby = "";
+        // Get saved data from sessionStorage
+        var storedUsername = sessionStorage.getItem('username');
+        if (storedUsername != "" || storedUsername != undefined) {
+            createdby = storedUsername;
+        } else {
+            //It means username is not found in storage
+            displayErrorMsgModal("Sorry, could not find created by"); //display Error message
+            return false;
+        }
+        if (role == "" || role == undefined) {
+            displayErrorMsgModal("Please select a role"); //display Error message
+            return false;
+        } else {
+
+            $("#editUserBtn").prop("disabled", true);
+            var formData = {
+                "username": jsonDetails.username,
+                "role": role,
+            };
+
+            formData = JSON.stringify(formData);
+
+            var request = $.ajax({
+                url: editAdminUserApi,
+                type: "POST",
+                data: formData,
+                contentType: "application/json"
+            });
+
+            request.done(function (data) {
+                if (data.status == "200") {
+                    document.getElementById("editUserForm").reset();
+                    $("#editUserBtn").removeAttr('disabled');
+
+                    console.log(data);
+                    //get admin user data again here
+                    getEmployeeUsersData();
+
+                    $('#editUserModal').modal('hide');
+                    displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
+                } else {
+                    $("#editUserBtn").removeAttr('disabled');
+                    console.log(data)
+                    displayErrorMsgModal((data.message)); //display Error message
+                }
+            });
+            // Handle when it failed to connect
+            request.fail(function (jqXHR, textStatus) {
+                console.log(textStatus);
+                //show the error message
+                $("#editUserBtn").removeAttr('disabled');
+                displayErrorMsgModal("Sorry, something went wrong");
+            });
+        }
+    });
+});
 
 
 //DELETE INVOICE 
@@ -1745,8 +1738,6 @@ $("#assignCustomersBtn").click(function (e) {
                 $("#assignCustomersBtn").removeAttr('disabled');
 
                 console.log(data);
-                //get admin user data again here
-                getInv();
 
                 $('#assignCustomersModal').modal('hide');
                 displaySuccessToastModal((data.message), ""); //DISPLAY TOAST
