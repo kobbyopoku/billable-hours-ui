@@ -83,6 +83,7 @@
                             <tr>
                               <th style="width: 10%">Invoice ID</th>
                               <th style="width: 30%">Company</th>
+                              <th style="width: 10%">Amount</th>
                               <th style="width: 10%">Status</th>
                               <th style="width: 30%">Date</th>
                               <th style="width: 10%">Item Count</th>
@@ -121,64 +122,33 @@
         </div>
         <!-- End Content -->
       </div>
-      
-      <div id="addFeedbackViewModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+
+      <div id="viewInvoiceModal" class="modal modalLg fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true" style="display: none;">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Add Feedback for <span id="feedbackUser"></span></h4>
+              <h4 class="modal-title" id="company"><span id="company"></span></h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
 
             <div class="modal-body">
-              <form id="addFeedbackForm">
-                <div class="form-group row d-flex align-items-center mb-5">
-
-                  <div class="col-md-12">
-                    <label class="form-control-label">Contact Number</label>
-                    <div class="form-group">
-                      <div class="input-group">
-                        <span class="input-group-addon">
-                          <i class="ti-mobile"></i>
-                        </span>
-                        <input type="text" class="form-control" id="addcontactno" placeholder="Contact Number">
-                      </div>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12">
-                    <label class="form-control-label">FeedBack on Calls</label>
-                    <div class="form-group">
-                      <select class="custom-select-roletype form-control" id="addFeedbackType" name="addFeedbackType"
-                        onchange="getReasonLocked(this)">
-                        <option value="">Select Feedback</option>
-
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12">
-                    <label class="form-control-label">Reason Locked</label>
-                    <div class="form-group">
-                      <select class="custom-select-roletype form-control" id="addReasonLocked" name="addReasonLocked">
-                        <option value="">Select Reason Locked</option>
-
-
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-12">
-                    <label class="form-control-label">Comment</label>
-                    <div class="form-group">
-                      <textarea id="addComment" class="form-control" placeholder="Add comment"></textarea>
-                    </div>
-                  </div>
-
-                </div>
-
-              </form>
+              <div class="table-responsive">
+                <table id="invoiceTable" class="table mb-0 table-striped table-hover manage-u-table table-css">
+                  <h2 id="company"></h2>
+                  <thead>
+                    <tr>
+                      <th style="width: 10%">Employee ID</th>
+                      <th style="width: 30%">Number of hours</th>
+                      <th style="width: 10%">Unit Price</th>
+                      <th style="width: 10%">Cost</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoiceTableData">
+                  </tbody>
+                </table>
+                <p id="totalAmount"></p>
+              </div>
 
               <!--Loader and notification messages-->
               <div class="modal_loader" style="display: none;">
@@ -195,29 +165,27 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-danger btn-gradient-01 waves-effect waves-light"
-                id="addFeedbackBtn">Add Feedback</button>
+
             </div>
           </div>
         </div>
+
+
+
       </div>
 
 
 
-    </div>
+      <?php include("assets/php/script-footer.php"); ?>
 
+      <script type="text/javascript">
+      $(document).ready(function() {
+        //Hide the error message div
+        $('#handleErrorMessages').hide("fast");
+        getStoredItem();
+        getInvoiceData();
 
+      });
+      </script>
 
-    <?php include("assets/php/script-footer.php"); ?>
-
-    <script type="text/javascript">
-    $(document).ready(function() {
-      //Hide the error message div
-      $('#handleErrorMessages').hide("fast");
-      getStoredItem();
-      getInvoiceData();
-
-    });
-    </script>
-
-    <?php include("assets/php/footer.php"); ?>
+      <?php include("assets/php/footer.php"); ?>

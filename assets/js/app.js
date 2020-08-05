@@ -584,6 +584,7 @@ function getInvoiceData() {
                 mainData = allData[i];
                 var detailsJson = JSON.stringify(mainData);
 
+                console.log(detailsJson)
 
                 deleteInvoice = "<a href='#' rel='tooltip' data-invoice-delete='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-trash'></i></a>";
                 accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='View Invoice' style='text-decoration: underline !important;'><i class='ti-eye'></i></a>";
@@ -682,7 +683,142 @@ function getInvoiceData() {
         $('#handleErrorMessages').show("fast");
         // displayErrorMsg("Sorry, something went wrong");
     });
+}
 
+
+function getInvoiceDataDetails() {
+    show_loader();
+
+    var table_list = "";
+    var assignedAgent = "";
+    var trafficLight = "";
+    var accountDetails = "";
+    var moreDetails = "";
+    var deleteInvoice = "";
+    var displayRgs = "";
+    ;
+    var lockedBase = 0;
+
+    $('#invoiceTable').DataTable().destroy();
+    $('#invoiceTableData').html("");
+
+    var formData = {};
+    formData = JSON.stringify(formData);
+
+    var request = $.ajax({
+        url: customerDataApi,
+        type: "GET"
+    });
+
+    //HANDLE response here
+    request.done(function (data) {
+        if (data.status == "200") {
+
+            var allData = data.invoice;
+
+            for (i = 0; i < allData.length; i++) {
+                mainData = allData[i];
+                var detailsJson = JSON.stringify(mainData);
+
+                console.log(detailsJson)
+
+                deleteInvoice = "<a href='#' rel='tooltip' data-invoice-delete='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='Feedbacks' ><i class='ti-trash'></i></a>";
+                accountDetails = "<a href='#' rel='tooltip' data-invoice-details='" + detailsJson + "'' class='' data-toggle='tooltip' data-placement='bottom' title='View Invoice' style='text-decoration: underline !important;'><i class='ti-eye'></i></a>";
+
+
+                // check RGS
+
+                table_list +=
+                    "<tr width='100%'>" +
+                    "<td>" + mainData.id + "</td>" +
+                    "<td>" + mainData.company + "</td>" +
+                    "<td>" + mainData.totalAmount + "</td>" +
+                    "<td>" + mainData.invoiceStatus + "</td>" +
+                    "<td >" + mainData.invoiceDate + "</td>" +
+                    "<td>" + mainData.itemsCount + "</td>" +
+                    "<td class='td-actions' >" + deleteInvoice + "&nbsp;" + accountDetails + "</td>" +
+                    "</tr>"
+
+            }
+
+            //Append the tables here
+            $('#invoiceTableData').html(table_list);
+
+            //Base view table
+            $('#invoiceTable').DataTable({
+                dom: 'Bfrtip',
+                scrollX: true,
+                select: true,
+                buttons: {
+                    buttons: [{
+                        extend: 'copy',
+                        text: 'Copy',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'excel',
+                        text: 'Excel',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'csv',
+                        text: 'Csv',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'pdf',
+                        text: 'Pdf',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true
+                    }, {
+                        extend: 'print',
+                        text: 'Print',
+                        title: $('h1').text(),
+                        exportOptions: {
+                            columns: ':not(.no-print)'
+                        },
+                        footer: true,
+                        autoPrint: true
+                    }],
+                    dom: {
+                        container: {
+                            className: 'dt-buttons'
+                        },
+                        button: {
+                            className: 'btn btn-primary'
+                        }
+                    }
+                }
+            });
+
+            //            hide_loader();
+            displaySuccessToast((data.message), ""); //DISPLAY TOAST
+        } else {
+            displayErrorMsg((data.message));
+        }
+
+    });
+
+    // Handle when it failed to connect
+    request.fail(function (jqXHR, textStatus) {
+        console.log(textStatus);
+        hide_loader();
+        //show the error message
+        $('#handleErrorMessages').show("fast");
+        // displayErrorMsg("Sorry, something went wrong");
+    });
 }
 
 //SHOW INVOICE DATA MORE DETAILS
@@ -690,11 +826,12 @@ $(document).on('click', '[data-invoice-details]', function (e) {
 
     var jsonDetails = JSON.parse($(this).attr('data-invoice-details'));
 
-    $('#displayAccountName').html((jsonDetails.numberOfHours));
-    $('#showAccountNo').html(jsonDetails.unitPrice);
-    $('#showAccountName').html((jsonDetails.cost));
-
-    $('#addFeedbackViewModal').modal('show');
+    $('#company').html((jsonDetails.company));
+    $('#numberOfHours').html((jsonDetails.invoiceDataList[0].numberOfHours));
+    $('#unitPrice').html(jsonDetails.invoiceDataList[0].unitPrice);
+    $('#cost').html((jsonDetails.invoiceDataList[0].cost));
+    $('#totalAmount').html((jsonDetails.totalAmount));
+    $('#viewInvoiceModal').modal('show');
 
 });
 
