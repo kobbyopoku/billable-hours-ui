@@ -125,17 +125,17 @@
 
       <div id="viewInvoiceModal" class="modal modalLg fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
         aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title" id="company"><span id="company"></span></h4>
+              <h4 class="modal-title">Invoice Details</h4>
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
             </div>
 
             <div class="modal-body">
               <div class="table-responsive">
                 <table id="invoiceTable" class="table mb-0 table-striped table-hover manage-u-table table-css">
-                  <h2 id="company"></h2>
+                  <h2 id="company"><span id="id"></span></h2>
                   <thead>
                     <tr>
                       <th style="width: 10%">Employee ID</th>
@@ -147,7 +147,7 @@
                   <tbody id="invoiceTableData">
                   </tbody>
                 </table>
-                <p id="totalAmount"></p>
+
               </div>
 
               <!--Loader and notification messages-->

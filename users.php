@@ -411,7 +411,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-danger btn-gradient-01 waves-effect waves-light"
-              id="assignCustomersBtn">Assign Customers</button>
+              id="assignCustomersBtn">Save Job</button>
           </div>
         </div>
       </div>
